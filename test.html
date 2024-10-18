@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition Test</title>
+</head>
+<body>
+    <h1>Speech Recognition Test</h1>
+    <button id="start">Start Listening</button>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('start').addEventListener('click', () => {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onresult = (event) => {
+                const results = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join(' ');
+                document.getElementById('output').innerText = results;
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+            };
+
+            recognition.start();
+        });
+    </script>
+</body>
+</html>
